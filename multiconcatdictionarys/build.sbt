@@ -1,10 +1,10 @@
-name := "MultiCincatDictionarys"
+name := "MultiConcatDictionarys"
 
 version := "0.01"
 
-lazy val multiCincatDictionarys = (project in file(".")).
+lazy val multiConcatDictionarys = (project in file(".")).
   settings(
-    name := "MultiCincatDictionarys"
+    name := "MultiConcatDictionarys"
   )
 
 scalaVersion := "2.12.1"

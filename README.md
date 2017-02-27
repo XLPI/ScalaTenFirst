@@ -38,3 +38,9 @@ TODO list of the top ten tasks in Scala
 					peachorange
 					peachpineapple
 just do it ...
+
+Run: Check only two file *.txt in current dir, which will be multipy.
+>: scala MultiConcat 
+
+or
+>: sbt run

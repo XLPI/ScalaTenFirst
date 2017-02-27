@@ -1,6 +1,0 @@
-apple
-blackberry
-kiwi
-lemon
-banana
-peach

@@ -39,7 +39,7 @@ TODO list of the top ten tasks in Scala
 					peachpineapple
 just do it ...
 
-Run: Check only two file *.txt in current dir, which will be multipy.
+Run: Check only two file *.txt in current dir, which will be multiply.
 >: scala MultiConcat 
 
 or

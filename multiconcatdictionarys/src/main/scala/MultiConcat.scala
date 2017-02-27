@@ -6,7 +6,6 @@ object MultiConcat {
     scala.io.Source.fromFile(file).getLines().toList
 
   def main(args: Array[String]) {
-
       try {
         val in = new BufferedReader(new InputStreamReader(System.in))
         do {

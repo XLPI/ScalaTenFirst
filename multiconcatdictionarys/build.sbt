@@ -12,3 +12,8 @@ scalaVersion := "2.12.1"
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.1" % Test
 )
+
+val buildSettings = Defaults.defaultSettings ++ Seq(
+   
+   javaOptions += "-Xmx1G"   
+)

@@ -1,20 +1,27 @@
 import java.io._
 
-object MultiConcat extends App {
+object MultiConcat {
+
+  val outputFileName = "result.txt"
+  val in = new BufferedReader(new InputStreamReader(System.in))
+  val filesHere = (new java.io.File(".")).listFiles
 
   def fileLines(file: java.io.File) =
     scala.io.Source.fromFile(file).getLines().toList
 
-  try {
-    val in = new BufferedReader(new InputStreamReader(System.in))
-    val filesHere = (new java.io.File(".")).listFiles
-    val resultDelete = for {
+  def resultFileDelete() = {
+    for {
       file <- filesHere
       if file.isFile
-      if file.getName == "result.txt"
+      if file.getName == outputFileName
     } yield file.delete()
+  }
 
-    println(" done")
+  def printListOfFiles(filesList: Array[File]) = {
+    filesList.foreach(x => println("\t" + x))
+  }
+
+  def filteringTxt(): Array[File] = {
     print("filtering by *.txt ...")
     val txtFiles = for {
       file <- filesHere
@@ -22,26 +29,23 @@ object MultiConcat extends App {
       if file.getName.endsWith(".txt")
     } yield file
     println("done")
+    txtFiles
+  }
 
-    do {
-      println("This app multiply and concat file lines from  one or two *.txt in current dir and save in result.txt\n" +
-        " Be shure that in current dir is one or two target *.txt files. Yes? - print y")
-    }
-    while (!(txtFiles.length == 2) && !(in.readLine() == "y"))
-
-    println(s"Finded ${txtFiles.length} folowing files to be multiply: ")
-    for (file <- txtFiles) println(file.getName)
-
+  def readLines(filesList: Array[File]): IndexedSeq[List[String]] = {
     println("read lines...")
     val listLines = for {
-      i <- 0 to txtFiles.length
-      file <- txtFiles
+      i <- 0 to filesList.length
+      file <- filesList
       if i <= 2
     } yield {
       fileLines(file)
     }
     println("done")
+    listLines
+  }
 
+  def concatByLine(listLines: IndexedSeq[List[String]]): List[String] = {
     println("crossover over 1-st list and 2-nd list and multiplying...")
     val result = for {
       elem1 <- listLines(0)
@@ -49,21 +53,45 @@ object MultiConcat extends App {
       result = elem1 ++ elem2
     } yield result
     println("done")
+    result
+  }
 
-    val toFile = new PrintWriter(new File("result.txt"))
-    println("Saving in result.txt...")
+  def writeResultToFile(result: List[String]) = {
+    val toFile = new PrintWriter(new File(outputFileName))
+    println(s"Saving in $outputFileName...")
     for (elem <- result) {
       toFile.write(elem + "\n")
     }
     println("done")
-
     toFile.close
-    println("..file closed now. Please, see result.txt\nExit.")
-
-  } catch {
-    case ex: IndexOutOfBoundsException => println("The required amount of files are not found!")
-    case ex: FileNotFoundException => println("File not found")
-    case ex: IOException => println("Read/Write error...")
+    println(s"..file closed now. Please, see $outputFileName\nExit.")
   }
 
+  def main(ars: Array[String]): Unit = {
+    // TODO --  get file name from console
+    try {
+      resultFileDelete()
+      printListOfFiles(filesHere)
+
+      val txtFiles = filteringTxt()
+
+      do {
+        println("This app multiply and concat file lines from  one or two *.txt in current dir and save in result.txt\n" +
+          " Be shure that in current dir is one or two target *.txt files. Yes? - print y")
+      }
+      while (!(txtFiles.length == 2) && !(in.readLine() == "y"))
+
+      println(s"Finded ${txtFiles.length} folowing files to be multiply: ")
+      printListOfFiles(txtFiles)
+      val lines = readLines(txtFiles)
+      val result = concatByLine(lines)
+      writeResultToFile(result)
+
+    } catch {
+      case ex: IndexOutOfBoundsException => println("The required amount of files are not found!")
+      case ex: FileNotFoundException => println("File not found")
+      case ex: IOException => println("Read/Write error...")
+    }
+
+  }
 }

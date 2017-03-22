@@ -21,7 +21,7 @@ class ParserIp  // TODO returned
 
     def parseIp(inputP: String): Array[Byte] = {
       if(validationIP(inputP)) {
-        val splitArrayString = inputP.split('.') //TODO check validIp: working only if . separeted
+        val splitArrayString = inputP.split('.')
         val byteArr = new Array[Byte](4)
         for (i <- 0 until byteArr.length) {
           byteArr(i) = (splitArrayString(i).toInt & 0xff).toByte
@@ -37,14 +37,12 @@ class ParserIp  // TODO returned
     def validationIP(ip: String): Boolean = {
       try {
         val splitArray = ip.split('.')
-        // reg expr by
-        for (e <- splitArray) print(e) //debug
         val splitInt = List(splitArray(0).toInt, splitArray(1).toInt, splitArray(2).toInt, splitArray(3).toInt)
-        val result =  (ip.contains('.') && (splitArray.length == 4) &&
+        val result =  ip.contains('.') && (splitArray.length == 4) &&
           (splitInt(0) >= 0) && (splitInt(0) <= 255) &&
           (splitInt(1) >= 0) && (splitInt(1) <= 255) &&
           (splitInt(2) >= 0) && (splitInt(2) <= 255) &&
-          (splitInt(3) >= 0) && (splitInt(3) <= 255))
+          (splitInt(3) >= 0) && (splitInt(3) <= 255)
         return result
       } catch {
         case ex => {
